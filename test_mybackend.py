@@ -35,19 +35,19 @@ def test_pwsh_get_version():
 
 def test_ssh_file_exists():
     host = testinfra.get_host("pwsh://")
-    id_rsa_pub = host.file("test.output")
+    id_rsa_pub = host.file("requirements.txt")
     assert id_rsa_pub.exists
 
 
 def test_ssh_file_is_file():
     host = testinfra.get_host("pwsh://")
-    id_rsa_pub = host.file("test.output")
+    id_rsa_pub = host.file("requirements.txt")
     assert id_rsa_pub.is_file
 
 
 def test_ssh_dir_is_directory():
     host = testinfra.get_host("pwsh://")
-    id_rsa_pub = host.file("testdir")
+    id_rsa_pub = host.file("backend")
     assert id_rsa_pub.is_directory
 
 

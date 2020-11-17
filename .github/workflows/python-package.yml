@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9]
+        python-version: [3.9]
 
     steps:
     - name: Setup Powershell 7.1
@@ -23,6 +23,10 @@ jobs:
         wget -q https://github.com/PowerShell/PowerShell/releases/download/v7.1.0/powershell_7.1.0-1.ubuntu.18.04_amd64.deb
         sudo dpkg -i powershell_7.1.0-1.ubuntu.18.04_amd64.deb
         sudo apt-get install -f
+    - name: Setup Test Assets
+      run: |
+        echo "Hello, world." > test.output
+        mkdir -p testdir
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2

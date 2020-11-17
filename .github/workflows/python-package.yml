@@ -21,6 +21,7 @@ jobs:
     - name: Setup Powershell 7.1
       run: |
         uname -s
+        cat /etc/*-release
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2

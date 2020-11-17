@@ -35,36 +35,18 @@ class WindowsFile(File):
 
     @property
     def is_symlink(self):
-        command = "(Get-ItemProperty -Path \"%s\").Attributes" % self.path
-        output = self.check_output(command)
-        return output
-        # return output.lower().contains("reparsepoint")
+        raise NotImplementedError
 
     @property
     def linked_to(self):
-        """Resolve symlink
-
-        >>> host.file("/var/lock").linked_to
-        '/run/lock'
-        """
-        return self.check_output("readlink -f %s", self.path)
+        raise NotImplementedError
 
     @property
     def user(self):
-        """Return file owner as string
-
-        >>> host.file("/etc/passwd").user
-        'root'
-        """
         raise NotImplementedError
 
     @property
     def uid(self):
-        """Return file user id as integer
-
-        >>> host.file("/etc/passwd").uid
-        0
-        """
         raise NotImplementedError
 
     @property
@@ -77,27 +59,6 @@ class WindowsFile(File):
 
     @property
     def mode(self):
-        """Return file mode as octal integer
-
-        >>> host.file("/etc/passwd").mode
-        384  # 0o600 (octal)
-        >>> host.file("/etc/password").mode == 0o600
-        True
-        >>> oct(host.file("/etc/password").mode) == '0600'
-        True
-
-        Note: Python 3 oct(x)_ function will produce ``'0o600'``
-
-        You can also utilize the file mode constants from
-        the stat_ library for testing file mode.
-
-        >>> import stat
-        >>> host.file("/etc/password").mode == stat.S_IRUSR | stat.S_IWUSR
-        True
-
-        .. _oct(x): https://docs.python.org/3.5/library/functions.html#oct
-        .. _stat: https://docs.python.org/2/library/stat.html
-        """
         raise NotImplementedError
 
     def contains(self, pattern):

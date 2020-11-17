@@ -4,14 +4,14 @@ from modules.windowsfile import WindowsFile
 
 import testinfra
 
-# def test_powershell_get_version():
-#     command = "(get-host).version.major"
+def test_powershell_get_version():
+    command = "(get-host).version.major"
 
-#     host = testinfra.get_host("powershell://")
-#     result = host.run(command)
+    host = testinfra.get_host("powershell://")
+    result = host.run(command)
 
-#     assert result.stdout.strip() == "5"
-#     assert result.rc == 0
+    assert result.stdout.strip() == "5"
+    assert result.rc == 0
 
 
 def test_pwsh_get_version():
@@ -24,13 +24,13 @@ def test_pwsh_get_version():
     assert result.rc == 0
 
 
-# def test_powershell_get_output():
-#     command = "(get-host).version.major"
+def test_powershell_get_output():
+    command = "(get-host).version.major"
 
-#     host = testinfra.get_host("powershell://")
-#     result = host.check_output(command)
+    host = testinfra.get_host("powershell://")
+    result = host.check_output(command)
 
-#     assert result == "5"
+    assert result == "5"
 
 
 def test_ssh_file_exists():

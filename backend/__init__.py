@@ -1,9 +1,8 @@
-from testinfra.backend import base, BACKENDS
+from testinfra.backend import BACKENDS
 
 import testinfra
 import importlib
-import os
-import urllib.parse
+
 
 BACKENDS["pwsh"] = "backend.pwsh.PwshBackend"
 BACKENDS["powershell"] = "backend.powershell.PowershellBackend"

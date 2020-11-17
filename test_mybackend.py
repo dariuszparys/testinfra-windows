@@ -39,16 +39,23 @@ def test_ssh_file_exists():
     assert id_rsa_pub.exists
 
 
+def test_ssh_file_is_file():
+    host = testinfra.get_host("pwsh://")
+    id_rsa_pub = host.file("~/.ssh/id_rsa.pub")
+    assert id_rsa_pub.is_file
+
+
+def test_ssh_dir_is_directory():
+    host = testinfra.get_host("pwsh://")
+    id_rsa_pub = host.file("~/.ssh")
+    assert id_rsa_pub.is_directory
+
+
 def test_123_file_does_not_exists():
     host = testinfra.get_host("pwsh://")
     id_rsa_pub = host.file("~/123.123")
-    assert id_rsa_pub.exists != True
+    assert id_rsa_pub.exists != "True"
 
-
-def test_for_sym_link():
-    host = testinfra.get_host("powershell://")
-    file_info = host.file("~/OneDrive - Microsoft")
-    assert file_info.is_symlink
 
 
 

@@ -2,6 +2,7 @@ import datetime
 
 from testinfra.modules.file import File
 
+
 class WindowsFile(File):
     def __init__(self, path):
         self.path = path
@@ -9,17 +10,20 @@ class WindowsFile(File):
     @property
     def exists(self):
         command = f"Test-Path -Path \"{self.path}\""
-        return self.run_test(command).rc == 0
+        result = self.check_output(command)
+        return result == "True"
 
     @property
     def is_file(self):
         command = f"Test-Path -Path \"{self.path}\" -PathType leaf"
-        return self.run_test(command).rc == 0
+        result = self.check_output(command)
+        return result == "True"
 
     @property
     def is_directory(self):
         command = f"Test-Path -Path \"{self.path}\" -PathType Container"
-        return self.run_test(command).rc == 0
+        result = self.check_output(command)
+        return result == "True"
 
     @property
     def is_pipe(self):

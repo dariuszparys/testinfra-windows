@@ -21,7 +21,15 @@ File.get_module_class = patched_get_module_class
 class PwshBackend(base.BaseBackend):
     def __init__(self, *args, **kwargs):
         NAME = "pwsh"
-        super().__init__(NAME, *args, **kwargs)
+        super().__init__(NAME, **kwargs)
+
+    def get_pytest_id(self):
+        return "pwsh"
+
+    @classmethod
+    def get_hosts(cls, host, **kwargs):
+        return [host]
+
 
     def run(self, command: str):
         command = "pwsh -Command \"& { %s }\"" % command

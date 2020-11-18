@@ -3,6 +3,7 @@ from testinfra.modules.file import File
 from modules.windowsfile import WindowsFile
 
 import platform
+import base64
 
 
 old_get_module_class = File.get_module_class
@@ -32,7 +33,9 @@ class PwshBackend(base.BaseBackend):
 
 
     def run(self, command: str):
-        command = "pwsh -Command \"& { %s }\"" % command
+        encoded_bytes = base64.b64encode(command.encode("utf-16-le"))
+        encoded_str = str(encoded_bytes, "utf-8")
+        command = f"pwsh -EncodedCommand {encoded_str}"
         return self.run_local(command)
 
     def encode(self, data):

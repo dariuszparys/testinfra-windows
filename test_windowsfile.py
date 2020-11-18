@@ -1,25 +1,7 @@
 from backend.powershell import PowershellBackend
 from backend.pwsh import PwshBackend
-from modules.windowsfile import WindowsFile
 
-import testinfra
-
-def test_powershell_get_version(host):
-    command = "(get-host).version.major"
-
-    result = host.run(command)
-
-    assert result.stdout.strip() == "7"
-    assert result.rc == 0
-
-
-def test_powershell_get_output(host):
-    command = "(get-host).version.major"
-
-    result = host.check_output(command)
-
-    assert result == "7"
-
+import datetime
 
 def test_requirements_file_exists(host):
     requirements_file = host.file("requirements.txt")
@@ -41,6 +23,18 @@ def test_123_file_does_not_exists(host):
     assert non_existent_file.exists == False
 
 
+def test_requirements_contains_pylint(host):
+    requirements_file = host.file("requirements.txt")
+    assert requirements_file.contains("pylint") == True
 
 
-    
+def test_requirements_file_get_content(host):
+    requirements_file = host.file("requirements.txt")
+    output = requirements_file.content
+    assert len(output) > 0
+
+
+def test_requirements_file_modified_date(host):
+    requirements_file = host.file("requirements.txt")
+    mdate = requirements_file.mtime
+    assert mdate.year == 2020

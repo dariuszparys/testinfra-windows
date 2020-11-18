@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 
 from testinfra.modules.file import File
 
@@ -62,7 +62,9 @@ class WindowsFile(File):
         raise NotImplementedError
 
     def contains(self, pattern):
-        return self.run_test("grep -qs -- %s %s", pattern, self.path).rc == 0
+        command = f"Select-String -Path \"{self.path}\" -Pattern \"{pattern}\""
+        result = self.check_output(command)
+        return len(result) > 0
 
     @property
     def md5sum(self):
@@ -72,40 +74,22 @@ class WindowsFile(File):
     def sha256sum(self):
         raise NotImplementedError
 
-    def _get_content(self, decode):
-        out = self.run_test("cat -- %s", self.path)
-        if out.rc != 0:
-            raise RuntimeError("Unexpected output %s" % (out,))
-        if decode:
-            return out.stdout
-        return out.stdout_bytes
-
     @property
     def content(self):
-        """Return file content as bytes
-
-        >>> host.file("/tmp/foo").content
-        b'caf\\xc3\\xa9'
-        """
-        return self._get_content(False)
+        command = f"Get-Content -Path \"{self.path}\""
+        return self.check_output(command)
 
     @property
     def content_string(self):
-        """Return file content as string
-
-        >>> host.file("/tmp/foo").content_string
-        'café'
-        """
-        return self._get_content(True)
+        command = f"Get-Content -Path \"{self.path}\""
+        return self.check_output(command)
 
     @property
     def mtime(self):
-        """Return time of last modification as datetime.datetime object
+        command = f"([DateTime](Get-Item \"{self.path}\").LastWriteTime).ToString(\"yyyyMMddTHH:mm:ssZ\")"
+        date_as_string = self.check_output(command)
+        return datetime.strptime(date_as_string, "%Y%m%dT%H:%M:%SZ")
 
-        >>> host.file("/etc/passwd").mtime
-        datetime.datetime(2015, 3, 15, 20, 25, 40)
-        """
-        raise NotImplementedError
 
     @property
     def size(self):

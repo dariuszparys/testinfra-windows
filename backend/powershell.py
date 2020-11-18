@@ -13,7 +13,9 @@ class PowershellBackend(base.BaseBackend):
         return [host]
 
     def run(self, command: str):
-        command = "powershell -Command \"& { %s }\"" % command
+        encoded_bytes = base64.b64encode(command.encode("utf-16-le"))
+        encoded_str = str(encoded_bytes, "utf-8")
+        command = f"pwsh -EncodedCommand {encoded_str}"
         return self.run_local(command)
 
 

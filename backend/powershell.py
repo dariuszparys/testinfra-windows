@@ -1,5 +1,7 @@
 from testinfra.backend import base
 
+import base64
+
 class PowershellBackend(base.BaseBackend):
     def __init__(self, *args, **kwargs):
         NAME = "powershell"
